@@ -18,7 +18,8 @@ class Htaccess
         $this->endFile = "# END " . $this->key;
         $this->file = ABSPATH . '.htaccess';
         $this->regex = '/(' . $this->startFile . '\n)(.*?)\n*(' . $this->endFile . ')/ms';
-        $this->imagePrepend = "wp-content/uploads/{$this->folder}/";
+        $contentDir = str_replace(trailingslashit(get_home_url()), '', trailingslashit(wp_upload_dir()['baseurl']));
+        $this->imagePrepend = "{$contentDir}{$this->folder}/";
     }
 
     public function run()

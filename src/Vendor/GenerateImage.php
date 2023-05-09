@@ -36,7 +36,7 @@ class GenerateImage
 
     public function setSizes(int $width, int $height): void
     {
-        $imagickFilter = \Imagick::FILTER_LANCZOS;
+        $imagickFilter = Imagick::FILTER_LANCZOS;
         $imagickBlur = 1;
         $imageOrgAspect = $this->imagick->getImageWidth() / $this->imagick->getImageHeight();
 

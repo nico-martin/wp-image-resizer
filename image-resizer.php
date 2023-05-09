@@ -15,11 +15,6 @@ License: MIT
 
 defined('ABSPATH') or die();
 
-add_action('init', function () {
-    load_plugin_textdomain('shir', false, basename(dirname(__FILE__)) . '/languages');
-});
-
-
 require_once 'src/Helpers.php';
 require_once 'src/Vendor/GenerateImage.php';
 require_once 'src/Plugin.php';
