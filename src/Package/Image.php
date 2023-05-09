@@ -97,20 +97,15 @@ class Image
         // todo: limit possible settings
         $uploadDir = wp_upload_dir();
 
-        $dir = trailingslashit($uploadDir['basedir']) . sayhelloImageResizer()->prefix . '/';
+        $dir = trailingslashit($uploadDir['basedir']) . sayhelloImageResizer()->Htaccess->folder . '/';
         $destPath = $dir . $path;
         $srcPath = get_attached_file($imageId);
 
         $image = new GenerateImage($srcPath);
         $image->setSizes($settings['width'], $settings['height']);
-        if ($settings['quality']) {
-            $image->setQuality($settings['quality']);
-        }
-        if ($settings['blur']) {
-            $image->setBlur($settings['blur']);
-        }
-
-        // todo: allow convertion based on extension
+        $image->setQuality($settings['quality']);
+        $image->setBlur($settings['blur']);
+        $image->setFormat($extension);
 
         $image->save($destPath);
         $image->echoImage();
@@ -120,7 +115,9 @@ class Image
     public function getImage()
     {
         if (!array_key_exists('path', $_GET)) return new WP_Error('invalid_image_path', 'Invalid Image Path', ['status' => 400]);
-        return [$this->getImageUrl($_GET['path'], 150, 100)];
+        return [$this->getImageUrl($_GET['path'], 150, 100), array_map(function ($e) {
+            return strtolower($e);
+        }, \Imagick::queryFormats()), Helpers::getSupportedExtensions()];
     }
 
     public function getImageUrl(int $imageId, int $width = 0, int $height = 0, int $quality = 0, int $blur = 0): string

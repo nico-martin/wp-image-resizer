@@ -15,12 +15,23 @@ class GenerateImage
 
     public function setQuality(int $quality)
     {
-        $this->imagick->setImageCompressionQuality($quality);
+        if ($quality !== 0) {
+            $this->imagick->setImageCompressionQuality($quality);
+        }
     }
 
     public function setBlur(int $blur): void
     {
-        $this->imagick->blurImage($blur, 10);
+        if ($blur !== 0) {
+            $this->imagick->blurImage($blur, 10);
+        }
+    }
+
+    public function setFormat(string $format): void
+    {
+        if (in_array($format, Helpers::getImagickFormats())) {
+            $this->imagick->setImageFormat($format);
+        }
     }
 
     public function setSizes(int $width, int $height): void
@@ -32,11 +43,19 @@ class GenerateImage
         if ($width && $height) {
             $this->imagick->cropThumbnailImage($width, $height);
         } elseif ($width) {
-            $this->imagick->resizeImage($width, intval($width / $imageOrgAspect), $imagickFilter,
-                $imagickBlur);
+            $this->imagick->resizeImage(
+                $width,
+                intval($width / $imageOrgAspect),
+                $imagickFilter,
+                $imagickBlur
+            );
         } elseif ($height) {
-            $this->imagick->resizeImage(intval($height * $imageOrgAspect), $height, $imagickFilter,
-                $imagickBlur);
+            $this->imagick->resizeImage(
+                intval($height * $imageOrgAspect),
+                $height,
+                $imagickFilter,
+                $imagickBlur
+            );
         }
     }
 
@@ -54,7 +73,7 @@ class GenerateImage
     public function echoImage()
     {
         $mime = $this->imagick->getImageMimeType();
-        $mime = $mime === 'image/x-jpeg' ? 'image/jpeg' : $mime;
+        $mime = str_replace('x-', '', $mime);
         $blob = $this->imagick->getImageBlob();
         header('Content-Type: ' . $mime);
         header('Content-Length: ' . strlen($blob));
