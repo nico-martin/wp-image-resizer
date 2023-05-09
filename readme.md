@@ -27,7 +27,7 @@ After the first request, the result will be saved and next time that image is re
 * `quality` => `quality-[1-100]`;
 * `blur` => `blur-[radius: int]`;
 
-`https://mywpsite.com/wp-content/uploads/imager/size-{width}x{height}/quality-{q}/blur-{b}/{post_name}.jpg`
+`https://mywpsite.com/wp-content/uploads/imager/size-{width}x{height}/quality-{q}/blur-{b}/{post_name}.{format}`
 
 ### Formats
 The image format can be changed directly by manipulating the file extension. If you would like to output the example image from earlier as `webp`, you can use the following URL:
