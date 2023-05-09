@@ -20,12 +20,6 @@ class Image
             'callback' => [$this, 'createImageFromPath'],
             'permission_callback' => '__return_true'
         ]);
-
-        register_rest_route(sayhelloImageResizer()->apiNamespace, 'i/', [
-            'methods' => ['GET'],
-            'callback' => [$this, 'getImage'],
-            'permission_callback' => '__return_true'
-        ]);
     }
 
     private function getImageIdBySlug(string $slug): int
@@ -110,14 +104,6 @@ class Image
         $image->save($destPath);
         $image->echoImage();
         return null;
-    }
-
-    public function getImage()
-    {
-        if (!array_key_exists('path', $_GET)) return new WP_Error('invalid_image_path', 'Invalid Image Path', ['status' => 400]);
-        return [$this->getImageUrl($_GET['path'], 150, 100), array_map(function ($e) {
-            return strtolower($e);
-        }, \Imagick::queryFormats()), Helpers::getSupportedExtensions()];
     }
 
     public function getImageUrl(int $imageId, int $width = 0, int $height = 0, int $quality = 0, int $blur = 0): string
